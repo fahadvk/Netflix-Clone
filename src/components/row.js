@@ -1,41 +1,41 @@
 import React, {useState, useEffect} from 'react';
-// import axios from '../axios';
+import axios from '../axios';
 import './row.css';
-// import Youtube from 'react-youtube';
+import Youtube from 'react-youtube';
 import {baseImgUrl, API_KEY} from '../constants/constants';
 
 function Row({title, fetchUrl, isLargeRow}) {
   const [movies, setMovies] = useState([]);
   const [trailerUrl, setTrailerUrl] = useState('');
 
-//   // Options for react-youtube
-//   const opts = {
-//     height: '390',
-//     width: '100%',
-//     playerVars: {
-//       autoplay: 1,
-//     },
-//   };
+  // Options for react-youtube
+  const opts = {
+    height: '390',
+    width: '100%',
+    playerVars: {
+      autoplay: 1,
+    },
+  };
 
-//   useEffect(() => {
-    // async function fetchData() {
-    //   const request = await axios.get(fetchUrl);
-    //   setMovies(request.data.results);
-    //   return request;
-    // }
-    // fetchData();
-//   }, [fetchUrl]);
+  useEffect(() => {
+    async function fetchData() {
+      const request = await axios.get(fetchUrl);
+      setMovies(request.data.results);
+      return request;
+    }
+    fetchData();
+  }, [fetchUrl]);
 
-//   const handleClick = async (movie) => {
-//     if (trailerUrl) {
-//       setTrailerUrl('');
-//     } else {
-//     //   let trailerurl = await axios.get(
-//     //     `/movie/${movie.id}/videos?api_key=${API_KEY}`
-//     //   );
-//       setTrailerUrl(trailerurl.data.results[0]?.key);
-//     }
-//   };
+  const handleClick = async (movie) => {
+    if (trailerUrl) {
+      setTrailerUrl('');
+    } else {
+      let trailerurl = await axios.get(
+        `/movie/${movie.id}/videos?api_key=${API_KEY}`
+      );
+      setTrailerUrl(trailerurl.data.results[0]?.key);
+    }
+  };
 
   return (
     <div className="row">
@@ -52,12 +52,12 @@ function Row({title, fetchUrl, isLargeRow}) {
                 }`}
                 alt={movie.name}
                 key={movie.id}
-                // onClick={() => handleClick(movie)}
+                 onClick={() => handleClick(movie)}
               />
             )
         )}
       </div>
-      {/* {trailerUrl && <Youtube videoId={trailerUrl} opts={opts} />} */}
+      {trailerUrl && <Youtube videoId={trailerUrl} opts={opts} />}
     </div>
   );
 }
